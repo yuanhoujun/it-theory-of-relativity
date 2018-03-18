@@ -1,0 +1,6 @@
+framework module Pods_IOSClient {
+  umbrella header "Pods-IOSClient-umbrella.h"
+
+  export *
+  module * { export * }
+}

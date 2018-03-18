@@ -7,9 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
-import java.util.Map;
-
 @Controller
 @RequestMapping("/user")
 public class UserController {
@@ -17,7 +14,7 @@ public class UserController {
     UserService userService;
 
     @ResponseBody
-    @GetMapping("/login")
+    @PostMapping("/login")
     public Response login(@RequestParam("username") String username, @RequestParam("pwd") String pwd) {
         Response response = new Response();
 
@@ -27,18 +24,20 @@ public class UserController {
             response.setMsg("用户不存在或密码错误");
         }
 
-        isExist = userService.isExist(username, pwd);
+        User user = userService.findUser(username, pwd);
 
-        if(!isExist) {
+        if(null == user) {
             response.setCode(Response.CODE_USER_PWD_ERR);
             response.setMsg("用户不存在或密码错误");
+        } else {
+            response.setData(user);
         }
 
         return response;
     }
 
     @ResponseBody
-    @GetMapping("/register")
+    @PostMapping("/register")
     public Response register(@RequestParam("username") String username, @RequestParam("pwd") String pwd) {
         Response response = new Response();
 
